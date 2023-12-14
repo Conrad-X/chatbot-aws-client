@@ -10,6 +10,7 @@ let isDone = false
 
 export default function VoiceWidget() {
   const accessKey = process.env.CHEETAH_ACCESS_KEY
+  console.log(accessKey)
 
   const [play, setPlay] = useState(false)
   const [chunks, setChunks] = useState([])
