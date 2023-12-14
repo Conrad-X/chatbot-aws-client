@@ -74,7 +74,7 @@ export default function VoiceWidget() {
   const processAudio = async (data) => {
     if (!isDone) { 
       isDone = true
-      const res = await fetch(`https://fast-server-api-53bf38087fa1.herokuapp.com/processText/?text=${data}`, {
+      const res = await fetch(`https://fast-server-api-default-ae8642698ddc.herokuapp.com/processText/?text=${data}`, {
           method: 'post',
         }
       )
