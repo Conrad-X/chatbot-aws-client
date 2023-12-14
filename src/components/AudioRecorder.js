@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 let isDone = false
 
 export default function VoiceWidget() {
-  const accessKey = "4I5RhbaRB7sy1VlFAqBR+v6yx2CyK8mYQpHRihd71gwcGrsl6riVIg=="
+  const accessKey = process.env.CHEETAH_ACCESS_KEY
 
   const [play, setPlay] = useState(false)
   const [chunks, setChunks] = useState([])
@@ -72,7 +72,7 @@ export default function VoiceWidget() {
   const processAudio = async (data) => {
     if (!isDone) { 
       isDone = true
-      const res = await fetch(`http://127.0.0.1:5002/processText/?text=${data}`, {
+      const res = await fetch(`https://fast-server-api-53bf38087fa1.herokuapp.com/processText/?text=${data}`, {
           method: 'post',
         }
       )
