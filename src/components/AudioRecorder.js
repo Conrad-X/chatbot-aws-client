@@ -5,6 +5,7 @@ import { createBlobUrl } from "../util/UtilityFunctions";
 import { FaMicrophone, FaMicrophoneAltSlash, FaMicrophoneAlt } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Button } from "@mui/material";
+require('dotenv').config()
 
 let isDone = false
 
