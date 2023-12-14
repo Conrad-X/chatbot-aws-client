@@ -5,12 +5,12 @@ import { createBlobUrl } from "../util/UtilityFunctions";
 import { FaMicrophone, FaMicrophoneAltSlash, FaMicrophoneAlt } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Button } from "@mui/material";
-require('dotenv').config()
+// require('dotenv').config()
 
 let isDone = false
 
 export default function VoiceWidget() {
-  const accessKey = process.env.CHEETAH_ACCESS_KEY
+  const accessKey = "4I5RhbaRB7sy1VlFAqBR+v6yx2CyK8mYQpHRihd71gwcGrsl6riVIg=="
   console.log(accessKey)
 
   const [play, setPlay] = useState(false)
