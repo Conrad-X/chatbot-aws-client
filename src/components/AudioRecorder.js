@@ -109,6 +109,7 @@ export default function VoiceWidget() {
 
   return (
     <div className="voice-widget">
+      {console.log(isLoaded)}
       <h1>Voice Chat Bot</h1>
       <IconContext.Provider value={{ color: "grey", className: "global-class-name", style: { marginTop: '100px'}, size: "200px", }}>
         {!isLoaded && <FaMicrophoneAltSlash onClick={initEngine}/>}
