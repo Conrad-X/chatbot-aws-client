@@ -1,5 +1,5 @@
 {
-  "name": "flac-audio-recorder",
+  "name": "conradlabs-voice-assistant",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
