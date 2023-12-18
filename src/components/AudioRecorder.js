@@ -5,9 +5,7 @@ import { createBlobUrl } from "../util/UtilityFunctions";
 import { FaMicrophone, FaMicrophoneAltSlash, FaMicrophoneAlt } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Button, Typography } from "@mui/material";
-import axios from 'axios'
 import Header from "./Header";
-import BackgroundImage from '../images/bg1.png';
 import '../App.css'
 
 let isDone = false
@@ -116,17 +114,17 @@ export default function VoiceWidget() {
   }, [play, chunks])
 
   return (
-    <div className="voice-widget" style={{ background: `url(${BackgroundImage})`, backgroundRepeat: 'no-repeat', width: '100%', height: '100%' }}>
+    <div className="voice-widget" style={{ width: '100%', height: '100vh' }}>
       <Header />
       {!isLoaded ? (
-        <div style={{ padding: '23%' }}>
+        <div style={{ marginTop: '40vh' }}>
           <Button size="large" style={{ fontWeight: 'bolder', fontSize: '25px' }} variant="contained" onClick={initEngine} > 
             {isBusy ? "Connecting..." : "Get Started"}
           </Button>
         </div>
       ) : (
-          <div style={{ padding: '15%', backgroundColor: "black" }}> 
-            <Typography fontWeight="bolder" variant="h4" mb={3} fontFamily={'sans-serif'} color={'white'} noWrap component="div" sx={{ flexGrow: 1 }}>
+          <div style={{ marginTop: '25vh' }}> 
+            <Typography fontWeight="bolder" variant="h4" mb={3} fontFamily={'sans-serif'} noWrap component="div" sx={{ flexGrow: 1 }}>
               { isListening ? "Recording..." : "Start Recording" }
             </Typography>          
             <IconContext.Provider value={{ color: isListening ? "red" : "blue", className: "microphone", size: "200px", }}>
@@ -135,7 +133,7 @@ export default function VoiceWidget() {
             <div style={{ marginTop: '30px' }}>
               <Button color="error" variant="contained" onClick={release} disabled={!isLoaded || isBusy}>Release</Button>
             </div>
-            <Typography fontWeight="bolder" variant="h6" mt={5} fontFamily={'sans-serif'} color={'white'} noWrap component="div" sx={{ flexGrow: 1 }}>
+            <Typography fontWeight="bolder" variant="h6" mt={5} fontFamily={'sans-serif'} noWrap component="div" sx={{ flexGrow: 1 }}>
               Transcript: {transcript}
             </Typography>
             {/* <p className="transcript">{transcript}</p> */}
