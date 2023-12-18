@@ -4,14 +4,20 @@ import cheetahModel from "../lib/cheetahModel";
 import { createBlobUrl } from "../util/UtilityFunctions";
 import { FaMicrophone, FaMicrophoneAltSlash, FaMicrophoneAlt } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import axios from 'axios'
+import Header from "./Header";
+import BackgroundImage from '../images/bg1.png';
+import '../App.css'
+
+// const dotenv = require("dotenv");
 // require('dotenv').config()
 
 let isDone = false
 
 export default function VoiceWidget() {
-  const accessKey = "4I5RhbaRB7sy1VlFAqBR+v6yx2CyK8mYQpHRihd71gwcGrsl6riVIg=="
-  console.log(accessKey)
+  const accessKey = process.env.REACT_APP_CHEETAH_ACCESS_KEY
+  console.log(accessKey);
 
   const [play, setPlay] = useState(false)
   const [chunks, setChunks] = useState([])
@@ -51,7 +57,8 @@ export default function VoiceWidget() {
     }
   }
 
-  const toggleRecord = async () => {
+  const toggleRecord = async (e) => {
+    // e.preventDefault()
     setIsBusy(true);
     if (isListening) {
       await stop();
@@ -74,10 +81,14 @@ export default function VoiceWidget() {
   const processAudio = async (data) => {
     if (!isDone) { 
       isDone = true
-      const res = await fetch(`https://fast-server-api-default-ae8642698ddc.herokuapp.com/processText/?text=${data}`, {
-          method: 'post',
-        }
-      )
+      const requestData = { text: data };
+      const res = await fetch("http://127.0.0.1:5002/processText", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      })
       readAllChunks(res.body)
     }
   }
@@ -108,19 +119,31 @@ export default function VoiceWidget() {
   }, [play, chunks])
 
   return (
-    <div className="voice-widget">
-      {console.log(isLoaded)}
-      <h1>Voice Chat Bot</h1>
-      <IconContext.Provider value={{ color: "grey", className: "global-class-name", style: { marginTop: '100px'}, size: "200px", }}>
-        {!isLoaded && <FaMicrophoneAltSlash onClick={initEngine}/>}
-        {isLoaded && !isBusy && !isListening && <FaMicrophone onClick={toggleRecord}/>}
-        {isLoaded && !isBusy && isListening && <FaMicrophoneAlt onClick={() => console.log("click")}/>}
-      </IconContext.Provider>
-      <div style={{ marginTop: '20px' }}>
-        <Button variant="contained" onClick={release} disabled={!isLoaded || isBusy}>Release</Button>
-      </div>
-      <h3 style={{ marginTop: '50px' }}>Transcript:</h3>
-      <p className="transcript">{transcript}</p>
+    <div className="voice-widget" style={{ background: `url(${BackgroundImage})`, backgroundRepeat: 'no-repeat', width: '100%', height: '100%' }}>
+      <Header />
+      {!isLoaded ? (
+        <div style={{ padding: '23%' }}>
+          <Button size="large" style={{ fontWeight: 'bolder', fontSize: '25px' }} variant="contained" onClick={initEngine} > 
+            {isBusy ? "Connecting..." : "Get Started"}
+          </Button>
+        </div>
+      ) : (
+          <div style={{ padding: '15%', backgroundColor: "black" }}> 
+            <Typography fontWeight="bolder" variant="h4" mb={3} fontFamily={'sans-serif'} color={'white'} noWrap component="div" sx={{ flexGrow: 1 }}>
+              { isListening ? "Recording..." : "Start Recording" }
+            </Typography>          
+            <IconContext.Provider value={{ color: isListening ? "red" : "blue", className: "microphone", size: "200px", }}>
+              <FaMicrophone onClick={toggleRecord}/>
+            </IconContext.Provider>
+            <div style={{ marginTop: '30px' }}>
+              <Button color="error" variant="contained" onClick={release} disabled={!isLoaded || isBusy}>Release</Button>
+            </div>
+            <Typography fontWeight="bolder" variant="h6" mt={5} fontFamily={'sans-serif'} color={'white'} noWrap component="div" sx={{ flexGrow: 1 }}>
+              Transcript: {transcript}
+            </Typography>
+            {/* <p className="transcript">{transcript}</p> */}
+          </div>
+      )}
     </div>
   );
 }
