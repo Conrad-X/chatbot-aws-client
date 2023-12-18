@@ -10,14 +10,11 @@ import Header from "./Header";
 import BackgroundImage from '../images/bg1.png';
 import '../App.css'
 
-// const dotenv = require("dotenv");
-// require('dotenv').config()
-
 let isDone = false
 
 export default function VoiceWidget() {
   const accessKey = process.env.REACT_APP_CHEETAH_ACCESS_KEY
-  console.log(accessKey);
+  const serverUrl = process.env.REACT_APP_SERVER_URL
 
   const [play, setPlay] = useState(false)
   const [chunks, setChunks] = useState([])
@@ -82,7 +79,7 @@ export default function VoiceWidget() {
     if (!isDone) { 
       isDone = true
       const requestData = { text: data };
-      const res = await fetch("http://127.0.0.1:5002/processText", {
+      const res = await fetch(serverUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
