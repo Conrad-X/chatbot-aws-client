@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setting Up Enviroment Variables
+
+You will have to create a .env file in the root directory of the project. Add following enviroment variables to it
+    1. REACT_APP_CHEETAH_ACCESS_KEY="Your-Access-Key"
+    2. REACT_APP_SERVER_URL="Your-Backend-API-URL"
+
 ## Available Scripts
 
 In the project directory, you can run:
