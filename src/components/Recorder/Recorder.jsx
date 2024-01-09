@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useCheetah } from "@picovoice/cheetah-react";
-import cheetahModel from "../lib/cheetahModel";
-import { createBlobUrl } from "../util/UtilityFunctions";
-import { FaMicrophone, FaMicrophoneAltSlash, FaMicrophoneAlt } from "react-icons/fa";
+import cheetahModel from "../../lib/cheetahModel";
+import { createBlobUrl } from "../../util/UtilityFunctions";
+import { FaMicrophone } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Button, Typography } from "@mui/material";
-import Header from "./Header";
-import '../App.css'
+import Header from "../Header/Header";
+import '../../App.css';
 
 let isDone = false
 
@@ -20,7 +20,7 @@ export default function VoiceWidget() {
   const [isBusy, setIsBusy] = useState(false);
   const [transcript, setTranscript] = useState("");
 
-  const { result, isLoaded, isListening, error, init, start, stop, release } =
+  const { result, isLoaded, isListening, init, start, stop, release } =
     useCheetah();
 
   const reset = () => {
@@ -53,7 +53,6 @@ export default function VoiceWidget() {
   }
 
   const toggleRecord = async (e) => {
-    // e.preventDefault()
     setIsBusy(true);
     if (isListening) {
       await stop();

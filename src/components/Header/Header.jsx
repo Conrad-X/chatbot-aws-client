@@ -8,7 +8,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 function appBarLabel(label) {
   return (
     <Toolbar>
-        <Typography variant="h4" fontWeight="bolder" noWrap component="header" sx={{ flexGrow: 1 }}>
+        <Typography noWrap component="header" sx={{ flexGrow: 1 }}>
             {label}
         </Typography>
     </Toolbar>
@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#1976d2',
+      main: '#265073',
     },
   },
 });
@@ -29,7 +29,7 @@ export default function Header() {
     <Stack spacing={2} sx={{ flexGrow: 1 }}>
       <ThemeProvider theme={darkTheme}>
         <AppBar position="sticky" color="primary" enableColorOnDark>
-          {appBarLabel('Conrad Labs Voice Assistant')}
+          {appBarLabel('Voice Assistant')}
         </AppBar>
       </ThemeProvider>
     </Stack>

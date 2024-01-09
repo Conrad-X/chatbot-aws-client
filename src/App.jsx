@@ -1,5 +1,5 @@
 import './App.css';
-import AudioRecorder from './components/AudioRecorder';
+import AudioRecorder from './components/Recorder/Recorder';
 
 function App() {
   return (
