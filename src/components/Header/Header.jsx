@@ -1,37 +1,18 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-function appBarLabel(label) {
-  return (
-    <Toolbar>
-        <Typography noWrap component="header" sx={{ flexGrow: 1 }}>
-            {label}
-        </Typography>
-    </Toolbar>
-  );
-}
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#265073',
-    },
-  },
-});
+import * as React from "react";
+import Stack from "@mui/material/Stack";
+import "./Header.css";
 
 export default function Header() {
   return (
     <Stack spacing={2} sx={{ flexGrow: 1 }}>
-      <ThemeProvider theme={darkTheme}>
-        <AppBar position="sticky" color="primary" enableColorOnDark>
-          {appBarLabel('Voice Assistant')}
-        </AppBar>
-      </ThemeProvider>
+      <div className="header-outer-container">
+        <section className="header-container">
+          <img src="assets/conrad-labs-logo.png" alt="" />
+          <div className="heading">Voice Assistant</div>
+          <div className="beta">BETA</div>
+        </section>
+        <div className="bot-version">v1.5</div>
+      </div>
     </Stack>
   );
 }

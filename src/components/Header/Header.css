@@ -1,0 +1,41 @@
+.header-outer-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #265073;
+}
+
+.header-container {
+  display: flex;
+  height: 40px;
+  padding: 10px;
+  color: white;
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 40px;
+}
+
+.heading {
+  margin-left: 5px;
+}
+
+.beta {
+  font-size: 12px;
+  background-color: #3f6f98;
+  margin-left: 8px;
+  width: fit-content;
+  height: 20px;
+  line-height: 20px;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-top: 10px;
+}
+
+.bot-version {
+  font-size: 20px;
+  margin-right: 8px;
+  font-weight: 300;
+  color: white;
+  margin-top: 16px;
+  margin-right: 12px;
+}
