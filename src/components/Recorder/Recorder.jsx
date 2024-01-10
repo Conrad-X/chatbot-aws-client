@@ -2,14 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useCheetah } from "@picovoice/cheetah-react";
 import cheetahModel from "../../lib/cheetahModel";
 import { createBlobUrl } from "../../util/UtilityFunctions";
-import { FaMicrophone } from "react-icons/fa";
-import { IconContext } from "react-icons";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import Header from "../Header/Header";
 import "./Recorder.css";
 import "../../App.css";
 
 let isDone = false;
+let startTime, endTime = null
 
 export default function VoiceWidget() {
   const accessKey = process.env.REACT_APP_CHEETAH_ACCESS_KEY;
@@ -21,8 +20,8 @@ export default function VoiceWidget() {
   const [isBusy, setIsBusy] = useState(false);
   const [transcript, setTranscript] = useState("");
 
-  const { result, isLoaded, isListening, init, start, stop, release } =
-    useCheetah();
+
+  const { result, isLoaded, isListening, init, start, stop, release } = useCheetah();
 
   const reset = () => {
     setPlay(false);
@@ -33,10 +32,10 @@ export default function VoiceWidget() {
 
   async function readAllChunks(readableStream) {
     const reader = readableStream.getReader();
-
     let done,
       value,
       count = 0;
+
     while (!done) {
       ({ value, done } = await reader.read());
       if (!done) {
@@ -64,6 +63,7 @@ export default function VoiceWidget() {
     } else {
       setTranscript("");
       reset();
+      startTime = new Date().getMilliseconds();
       await start();
     }
     setIsBusy(false);
@@ -92,10 +92,15 @@ export default function VoiceWidget() {
     }
   };
 
+  const getFormattedTranscribedData = (data, time) => {
+    return `<i>${data}</i>&nbsp;<b>${time} sec</b> <br/>`;
+  }
+
   useEffect(() => {
-    if (result !== null) {
+    if (result?.transcript) {
       setTranscript((prev) => {
-        let newTranscript = prev + result.transcript;
+        endTime = new Date().getMilliseconds();
+        let newTranscript = prev + getFormattedTranscribedData(result.transcript, (endTime-startTime)/1000);
 
         if (result.isComplete) {
           newTranscript += "\n";
@@ -123,55 +128,40 @@ export default function VoiceWidget() {
     <div className="voice-widget" style={{ width: "100%", height: "100vh" }}>
       <Header />
       {!isLoaded ? (
-        <div style={{ marginTop: "40vh" }}>
+        <div style={{ marginTop: "32vh" }}>
           <div className="status-button" onClick={initEngine}>
-            {isBusy ? "Connecting ..." : "Get Started"}
+            {isBusy ? "Connecting ..." : "Connect"}
           </div>
         </div>
       ) : (
         <div style={{ marginTop: "25vh" }}>
-          <Typography
-            fontWeight="bolder"
-            variant="h4"
-            mb={3}
-            fontFamily={"sans-serif"}
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
-            {isListening ? "Recording..." : "Start Recording"}
-          </Typography>
-          <IconContext.Provider
-            value={{
-              color: isListening ? "red" : "blue",
-              className: "microphone",
-              size: "200px",
-            }}
-          >
-            <FaMicrophone onClick={toggleRecord} />
-          </IconContext.Provider>
-          
-          <div style={{ marginTop: "30px" }}>
-            <Button
-              color="error"
-              variant="contained"
-              onClick={release}
-              disabled={!isLoaded || isBusy}
-            >
-              Release
-            </Button>
+          <div className="microphone-container">
+            <span 
+              className="material-symbols-outlined mic-on" 
+              onClick={toggleRecord}
+              style={{color: isListening ? "white" : "gray", backgroundColor: isListening ? "#2D9596": "#e0e0e0"}}
+              > 
+              {isListening ? "mic" : "mic_off"} 
+            </span>
           </div>
-          <Typography
-            fontWeight="bolder"
-            variant="h6"
-            mt={5}
-            fontFamily={"sans-serif"}
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
-            Transcript: {transcript}
-          </Typography>
+          
+          <div className="end-connection-button">
+            <div className="end-button">
+              <span 
+                className="material-symbols-outlined" 
+                onClick={release}
+                > 
+                close
+              </span>
+            </div>
+          </div>
+
+          {
+            transcript ? <div className="response" dangerouslySetInnerHTML={{ __html: transcript }}></div> : 
+            <div className="response">
+              {isListening ? "Processing..." : "No Transcription Available"}
+            </div>
+          }
         </div>
       )}
     </div>
